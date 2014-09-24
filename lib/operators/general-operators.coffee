@@ -84,7 +84,7 @@ class Delete extends Operator
   #
   # Returns nothing.
   execute: (count=1) ->
-    cursor = @editor.getCursor()
+    cursor = @editor.getLastCursor()
 
     if _.contains(@motion.select(count, @selectOptions), true)
       validSelection = true
@@ -92,7 +92,7 @@ class Delete extends Operator
     if validSelection?
       @editor.delete()
       if !@allowEOL and cursor.isAtEndOfLine() and !@motion.isLinewise?()
-        @editor.moveCursorLeft()
+        @editor.moveLeft()
 
     if @motion.isLinewise?()
       @editor.setCursorScreenPosition([cursor.getScreenRow(), 0])
@@ -107,8 +107,8 @@ class ToggleCase extends Operator
 
   execute: (count=1) ->
     pos = @editor.getCursorBufferPosition()
-    lastCharIndex = @editor.lineLengthForBufferRow(pos.row) - 1
-    count = Math.min count, @editor.lineLengthForBufferRow(pos.row) - pos.column
+    lastCharIndex = @editor.lineTextForBufferRow(pos.row).length - 1
+    count = Math.min count, @editor.lineTextForBufferRow(pos.row).length - pos.column
 
     # Do nothing on an empty line
     return if @editor.getBuffer().isRowBlank(pos.row)
@@ -125,7 +125,7 @@ class ToggleCase extends Operator
           @editor.setTextInBufferRange(range, char.toLowerCase())
 
         unless point.column >= lastCharIndex
-          @editor.moveCursorRight()
+          @editor.moveRight()
 
     @vimState.activateCommandMode()
 
@@ -144,7 +144,7 @@ class Yank extends Operator
     originalPosition = @editor.getCursorScreenPosition()
     if _.contains(@motion.select(count), true)
       selectedPosition = @editor.getCursorScreenPosition()
-      text = @editor.getSelection().getText()
+      text = @editor.getLastSelection().getText()
       originalPosition = Point.min(originalPosition, selectedPosition)
     else
       text = ''

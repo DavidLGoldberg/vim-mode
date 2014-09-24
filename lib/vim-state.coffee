@@ -377,7 +377,7 @@ class VimState
     @submode = null
 
     if @editorView.is(".insert-mode")
-      cursor = @editor.getCursor()
+      cursor = @editor.getLastCursor()
       cursor.moveLeft() unless cursor.isAtBeginningOfLine()
 
     @changeModeClass('command-mode')
@@ -428,7 +428,7 @@ class VimState
     @changeModeClass('visual-mode')
 
     if @submode == 'linewise'
-      @editor.selectLine()
+      @editor.selectLinesContainingCursors()
 
     @updateStatusBar()
 

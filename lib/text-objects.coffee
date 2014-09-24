@@ -6,7 +6,7 @@ class TextObject
 
 class SelectInsideWord extends TextObject
   select: ->
-    @editor.selectWord()
+    @editor.selectWordsContainingCursors()
     [true]
 
 # SelectInsideQuotes and the next class defined (SelectInsideBrackets) are
@@ -112,7 +112,7 @@ class SelectInsideBrackets extends TextObject
 
 class SelectAWord extends TextObject
   select: ->
-    @editor.selectWord()
+    @editor.selectWordsContainingCursors()
     @editor.selectToBeginningOfNextWord()
     [true]
 

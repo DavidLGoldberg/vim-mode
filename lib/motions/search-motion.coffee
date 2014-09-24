@@ -107,7 +107,7 @@ class SearchCurrentWord extends SearchBase
     @input = new Input(@getCurrentWordMatch())
 
   getCurrentWord: (onRecursion=false) ->
-    cursor = @editor.getCursor()
+    cursor = @editor.getLastCursor()
     wordRange  = cursor.getCurrentWordBufferRange(wordRegex: @keywordRegex)
     characters = @editor.getTextInBufferRange(wordRange)
 
@@ -123,7 +123,7 @@ class SearchCurrentWord extends SearchBase
       characters
 
   cursorIsOnEOF: ->
-    cursor = @editor.getCursor()
+    cursor = @editor.getLastCursor()
     pos = cursor.getMoveNextWordBoundaryBufferPosition(wordRegex: @keywordRegex)
     eofPos = @editor.getEofBufferPosition()
     pos.row == eofPos.row && pos.column == eofPos.column
@@ -155,7 +155,7 @@ class BracketMatchingMotion extends SearchBase
     @input = new Input(@getCurrentWordMatch())
 
   getCurrentWord: (onRecursion=false) ->
-    cursor = @editor.getCursor()
+    cursor = @editor.getLastCursor()
     tempPoint = cursor.getBufferPosition().toArray()
     @character = @editor.getTextInBufferRange([cursor.getBufferPosition(),new Point(tempPoint[0],tempPoint[1] + 1)])
     @startUp = false;

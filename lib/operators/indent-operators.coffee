@@ -18,7 +18,7 @@ class Indent extends Operator
   #
   # Returns nothing.
   indent: (count, direction='indent') ->
-    row = @editor.getCursorScreenRow()
+    row = @editor.getCursorScreenPosition().row
     mode = @vimState.mode
 
     @motion.select(count)
